@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { blue, grey } from "@material-ui/core/colors";
 import { Grid } from "../../components/Grid";
+import { motion } from "framer-motion";
 
 const schema = yup.object().shape({
   title: yup.string().required(),
@@ -128,63 +129,69 @@ export const AddNoteDialog = ({ addNote }) => {
         + Add Note
       </Button>
       <Modal open={open} onClose={handleClose}>
-        <div className={paperContainer}>
-          <div className={paper}>
-            <p className={headerText}>Add Note</p>
-            <form onSubmit={handleSubmit(submitForm)}>
-              <Grid container className={formContainer}>
-                <Grid xs={12} item className={errorText}>
-                  <p> {errors.title?.message} </p>
-                  <p> {errors.category?.message} </p>
-                  <p> {errors.description?.message} </p>
-                </Grid>
-                <Grid item xs={8}>
-                  <input
-                    type='text'
-                    name='title'
-                    placeholder='Title...'
-                    ref={register}
-                    className={titleInputField}
-                  ></input>
-                </Grid>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={paperContainer}>
+            <div className={paper}>
+              <p className={headerText}>Add Note</p>
+              <form onSubmit={handleSubmit(submitForm)}>
+                <Grid container className={formContainer}>
+                  <Grid xs={12} item className={errorText}>
+                    <p> {errors.title?.message} </p>
+                    <p> {errors.category?.message} </p>
+                    <p> {errors.description?.message} </p>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <input
+                      type='text'
+                      name='title'
+                      placeholder='Title...'
+                      ref={register}
+                      className={titleInputField}
+                    ></input>
+                  </Grid>
 
-                <Grid item xs={4}>
-                  <select
-                    className={selectInputField}
-                    name='category'
-                    placeholder='Category...'
-                    ref={register}
-                  >
-                    <option value='Home'>Home</option>
-                    <option value='Work'>Work</option>
-                    <option value='Personal'>Personal</option>
-                  </select>
-                </Grid>
+                  <Grid item xs={4}>
+                    <select
+                      className={selectInputField}
+                      name='category'
+                      placeholder='Category...'
+                      ref={register}
+                    >
+                      <option value='Home'>Home</option>
+                      <option value='Work'>Work</option>
+                      <option value='Personal'>Personal</option>
+                    </select>
+                  </Grid>
 
-                <Grid item xs={8}>
-                  <textarea
-                    type='text'
-                    name='description'
-                    placeholder='Description...'
-                    ref={register}
-                    className={descriptionInputField}
-                  />
-                </Grid>
+                  <Grid item xs={8}>
+                    <textarea
+                      type='text'
+                      name='description'
+                      placeholder='Description...'
+                      ref={register}
+                      className={descriptionInputField}
+                    />
+                  </Grid>
 
-                <Grid item xs={9} />
+                  <Grid item xs={9} />
 
-                <Grid item xs={3} align='right'>
-                  <Button className={buttonText} onClick={handleClose}>
-                    Cancel{" "}
-                  </Button>
-                  <Button className={buttonText} type='submit'>
-                    Add{" "}
-                  </Button>
+                  <Grid item xs={3} align='right'>
+                    <Button className={buttonText} onClick={handleClose}>
+                      Cancel{" "}
+                    </Button>
+                    <Button className={buttonText} type='submit'>
+                      Add{" "}
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </Modal>
     </div>
   );

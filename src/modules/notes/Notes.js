@@ -58,11 +58,10 @@ export const Notes = () => {
   });
 
   useMemo(() => {
-    console.log("Running useMemo: ", notes);
     SortNotes(notes);
   }, [notes]);
 
-  // localStorage.clear();
+  localStorage.clear();
 
   return (
     <>
@@ -88,7 +87,7 @@ export const Notes = () => {
       />
       <br />
       <Grid container spacing={3}>
-        {searchedNotes.map((note) =>
+        {searchedNotes.map((note, index) =>
           note.category === category ? (
             <Grid item xs={12} sm={6} key={note.id}>
               <CardNote
@@ -96,6 +95,7 @@ export const Notes = () => {
                 deleteNote={deleteNote}
                 editNote={editNote}
                 note={note}
+                index={index}
               />
             </Grid>
           ) : category === "All" ? (
@@ -105,6 +105,7 @@ export const Notes = () => {
                 deleteNote={deleteNote}
                 editNote={editNote}
                 note={note}
+                index={index}
               />
             </Grid>
           ) : (

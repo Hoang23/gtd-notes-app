@@ -21,18 +21,16 @@ export const FilterButton = ({ onClick, isActive, category, children }) => {
   const styles = useStyles1(category);
 
   return (
-    <div>
-      <Button
-        onClick={onClick}
-        className={isActive && styles[`button${category}Active`]}
-      >
-        {children}
-        {category !== "All" ? (
-          <span className={styles[`dot${category}`]}> &bull;</span>
-        ) : (
-          ""
-        )}
-      </Button>
-    </div>
+    <Button
+      onClick={onClick}
+      className={isActive && styles[`button${category}Active`]}
+    >
+      {children}
+      {category !== "All" ? (
+        <span className={styles[`dot${category}`]}> &bull;</span>
+      ) : (
+        ""
+      )}
+    </Button>
   );
 };
