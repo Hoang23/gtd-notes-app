@@ -9,6 +9,7 @@ import { SearchBar } from "./SearchBar";
 import { DeleteAllNotesButton } from "./DeleteAllNotesButton";
 import { EmptyNotesAssistance } from "./EmptyNotesAssistance";
 import { makeStyles } from "@material-ui/core/styles";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   ActionButtons: {
@@ -61,7 +62,9 @@ export const Notes = () => {
     SortNotes(notes);
   }, [notes]);
 
-  localStorage.clear();
+  let transitionTime = 0.2;
+
+  // localStorage.clear();
 
   return (
     <>
@@ -90,23 +93,37 @@ export const Notes = () => {
         {searchedNotes.map((note, index) =>
           note.category === category ? (
             <Grid item xs={12} sm={6} key={note.id}>
-              <CardNote
-                updateComplete={updateComplete}
-                deleteNote={deleteNote}
-                editNote={editNote}
-                note={note}
-                index={index}
-              />
+              <motion.div
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: (transitionTime += 0.2) }}
+              >
+                <CardNote
+                  updateComplete={updateComplete}
+                  deleteNote={deleteNote}
+                  editNote={editNote}
+                  note={note}
+                  index={index}
+                />
+              </motion.div>
             </Grid>
           ) : category === "All" ? (
             <Grid item xs={12} sm={6} key={note.id}>
-              <CardNote
-                updateComplete={updateComplete}
-                deleteNote={deleteNote}
-                editNote={editNote}
-                note={note}
-                index={index}
-              />
+              <motion.div
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: (transitionTime += 0.2) }}
+              >
+                <CardNote
+                  updateComplete={updateComplete}
+                  deleteNote={deleteNote}
+                  editNote={editNote}
+                  note={note}
+                  index={index}
+                />
+              </motion.div>
             </Grid>
           ) : (
             ""

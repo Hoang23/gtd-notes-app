@@ -133,6 +133,7 @@ export const AddNoteDialog = ({ addNote }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
+          drag
         >
           <div className={paperContainer}>
             <div className={paper}>

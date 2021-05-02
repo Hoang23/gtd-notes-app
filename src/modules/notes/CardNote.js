@@ -6,7 +6,6 @@ import { orange, green, indigo, grey } from "@material-ui/core/colors";
 import { Grid } from "../../components/Grid";
 import { EditNoteDialog } from "./EditNoteDialog";
 import { DeleteNoteDialog } from "./DeleteNoteDialog";
-import { motion } from "framer-motion";
 
 const useStyles = makeStyles({
   root: {
@@ -93,46 +92,40 @@ export const CardNote = ({
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 + index / 2 }}
-      >
-        <Card className={root}>
-          <CardContent>
-            <Grid container className={titleContainer} justify='space-between'>
-              <Grid item xs={1}>
-                <Checkbox
-                  color='default'
-                  className={checkboxHandler}
-                  checked={note.completed}
-                  onChange={handleToggleComplete}
-                />
-              </Grid>
-
-              <Grid item xs={8}>
-                <Typography className={titleHandler}>{note.title} </Typography>
-              </Grid>
-
-              <Grid item xs={3}>
-                <Grid container className={iconsHandler}>
-                  <EditNoteDialog note={note} editNote={editNote} />
-                  <DeleteNoteDialog handleDelete={handleDelete} />
-                </Grid>
-              </Grid>
+      <Card className={root}>
+        <CardContent>
+          <Grid container className={titleContainer} justify='space-between'>
+            <Grid item xs={1}>
+              <Checkbox
+                color='default'
+                className={checkboxHandler}
+                checked={note.completed}
+                onChange={handleToggleComplete}
+              />
             </Grid>
 
-            <Grid className={bodyContainer}>
-              <Typography className={descriptionHandler}>
-                {note.description}
-              </Typography>
-              <Typography className={dateHandler} variant='body2' component='p'>
-                {note.date}
-              </Typography>
+            <Grid item xs={8}>
+              <Typography className={titleHandler}>{note.title} </Typography>
             </Grid>
-          </CardContent>
-        </Card>
-      </motion.div>
+
+            <Grid item xs={3}>
+              <Grid container className={iconsHandler}>
+                <EditNoteDialog note={note} editNote={editNote} />
+                <DeleteNoteDialog handleDelete={handleDelete} />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid className={bodyContainer}>
+            <Typography className={descriptionHandler}>
+              {note.description}
+            </Typography>
+            <Typography className={dateHandler} variant='body2' component='p'>
+              {note.date}
+            </Typography>
+          </Grid>
+        </CardContent>
+      </Card>
     </>
   );
 };
