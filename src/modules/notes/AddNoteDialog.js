@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { blue, grey } from "@material-ui/core/colors";
 import { Grid } from "../../components/Grid";
 import { motion } from "framer-motion";
+import { Frame } from "framer";
 
 const schema = yup.object().shape({
   title: yup.string().required(),
@@ -123,17 +124,31 @@ export const AddNoteDialog = ({ addNote }) => {
     }
   };
 
+  const transition = {
+    type: "spring",
+    restDelta: 0.5,
+  };
+
   return (
     <div>
-      <Button type='button' onClick={handleOpen} className={addNoteModal}>
-        + Add Note
-      </Button>
+      <motion.div
+        // initial={{ opacity: 0 }}
+        // animate={{ opacity: 1 }}
+        // transition={{ duration: 0.5 }}
+        initial={{ rotate: 0 }}
+        animate={{ rotate: 360 }}
+        transition={{ type: "spring", duration: 1.5, delay: 3 }}
+      >
+        <Button type='button' onClick={handleOpen} className={addNoteModal}>
+          + Add Note
+        </Button>
+      </motion.div>
+
       <Modal open={open} onClose={handleClose}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          drag
         >
           <div className={paperContainer}>
             <div className={paper}>
