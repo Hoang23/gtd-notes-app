@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Items } from "../../constants.js";
 import { getFilteredNotes, createNote, updateNote } from "./utils";
+import moment from "moment";
 
 export const useNotes = () => {
   const [notes, setNotes] = useState(Items);
@@ -20,6 +21,12 @@ export const useNotes = () => {
 
   const SortNotes = (notes) => {
     setNotes(
+      // sort by date
+      notes.sort((a, b) => {
+        return moment(b.date).diff(a.date);
+      }),
+
+      // sort by completion
       notes.sort((a, b) => {
         return a.completed - b.completed;
       })

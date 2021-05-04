@@ -64,7 +64,7 @@ export const Notes = () => {
 
   let transitionTime = 0.2;
 
-  // localStorage.clear();
+  localStorage.clear();
 
   return (
     <>
