@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent, Checkbox } from "@material-ui/core";
+import { Card, CardContent, Checkbox, Box } from "@material-ui/core";
 import { Typography } from "../../components/Typography";
 import { orange, green, indigo, grey } from "@material-ui/core/colors";
 import { Grid } from "../../components/Grid";
@@ -24,24 +24,27 @@ const useStyles = makeStyles({
     boxShadow: "0px 3px 6px #00000029",
     textDecoration: (note) => (note.completed === true ? "line-through" : ""),
   },
+
   titleHandler: {
     fontSize: 20,
     color: "white",
   },
   descriptionHandler: {
     fontSize: 14,
-    marginBottom: 12,
     color: "white",
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    lineClamp: 3,
+    wordBreak: "break-all",
+    overflow: "hidden",
   },
   titleContainer: {
     display: "flex",
     marginBottom: ".5rem",
   },
   bodyContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "column",
-    height: "100%",
+    minHeight: 110,
+    maxHeight: 110,
   },
   dateHandler: {
     fontSize: 15,
@@ -93,7 +96,7 @@ export const CardNote = ({
   return (
     <>
       <Card className={root}>
-        <CardContent>
+        <CardContent style={{ width: "auto" }}>
           <Grid container className={titleContainer} justify='space-between'>
             <Grid item xs={1}>
               <Checkbox
@@ -105,7 +108,9 @@ export const CardNote = ({
             </Grid>
 
             <Grid item xs={8}>
-              <Typography className={titleHandler}>{note.title} </Typography>
+              <Typography noWrap className={titleHandler}>
+                {note.title}{" "}
+              </Typography>
             </Grid>
 
             <Grid item xs={3}>
@@ -116,10 +121,20 @@ export const CardNote = ({
             </Grid>
           </Grid>
 
-          <Grid className={bodyContainer}>
-            <Typography className={descriptionHandler}>
+          <Grid
+            container
+            className={bodyContainer}
+            direction='column'
+            justify='space-between'
+          >
+            <Typography
+              className={descriptionHandler}
+              variant='body2'
+              component='p'
+            >
               {note.description}
             </Typography>
+
             <Typography className={dateHandler} variant='body2' component='p'>
               {note.date}
             </Typography>

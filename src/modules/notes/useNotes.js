@@ -43,8 +43,9 @@ export const useNotes = () => {
     setNotes(filteredNotes);
   };
 
-  const deleteAllNotes = () => {
-    setNotes([]);
+  const deleteCompletedNotes = () => {
+    let incompletedNotes = notes.filter((note) => note.completed === false);
+    setNotes(incompletedNotes);
   };
 
   const updateComplete = (id) => {
@@ -86,7 +87,7 @@ export const useNotes = () => {
     setNotes,
     addNote,
     deleteNote,
-    deleteAllNotes,
+    deleteCompletedNotes,
     editNote,
     updateComplete,
     SortNotes,

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Modal } from "@material-ui/core";
+import { Modal, Select, MenuItem, TextField } from "@material-ui/core";
 import { Button } from "../../components/Button";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { blue, grey } from "@material-ui/core/colors";
@@ -11,7 +11,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import { motion } from "framer-motion";
 
 const schema = yup.object().shape({
-  title: yup.string().required(),
+  title: yup
+    .string()
+    .required()
+    .max(50, "title must be less than 50 characters"),
   description: yup.string(),
   category: yup.string(),
 });
@@ -34,49 +37,48 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     marginTop: "10vh",
   },
+  addNoteModal: {
+    backgroundColor: blue[400],
+    color: "white",
+  },
   titleInputField: {
     borderRadius: "4px",
     width: "90%",
-    height: "40px",
-    fontSize: 18,
     color: grey[700],
     backgroundColor: grey[200],
+    fontSize: 18,
+
+    borderBottom: "none",
   },
   descriptionInputField: {
-    borderRadius: "4px",
+    color: grey[700],
+    backgroundColor: grey[200],
     width: "90%",
-    height: "20vh",
-    minHeight: "20vh",
-    fontSize: 18,
-    color: grey[700],
-    backgroundColor: grey[200],
-    maxWidth: "90%",
-    maxHeight: "40vh",
-    minWidth: "90%",
+    borderRadius: "4px",
     marginTop: "2rem",
-    fontFamily: "Roboto",
-  },
-  selectInputField: {
-    borderRadius: "3px",
-    width: "100%",
-    height: "45px",
     fontSize: 18,
+  },
+
+  selectInputField: {
+    borderRadius: "4px",
+    width: "100%",
     color: grey[700],
     backgroundColor: grey[200],
+    fontSize: 18,
   },
   formContainer: {
     display: "flex",
     alignItems: "center",
   },
-  headerHandler: {
+  headerText: {
     borderBottom: "1px solid lightgrey",
     color: "grey",
     fontSize: 24,
   },
-  errorHandler: {
+  errorText: {
     color: theme.palette.error.main,
   },
-  buttonHandler: {
+  buttonText: {
     color: blue[600],
   },
 }));
@@ -89,9 +91,9 @@ export const EditNoteDialog = ({ note, editNote }) => {
     descriptionInputField,
     selectInputField,
     formContainer,
-    headerHandler,
-    errorHandler,
     buttonHandler,
+    errorText,
+    buttonText,
   } = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -104,7 +106,7 @@ export const EditNoteDialog = ({ note, editNote }) => {
     setOpen(false);
   };
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, control, errors } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -131,54 +133,66 @@ export const EditNoteDialog = ({ note, editNote }) => {
         >
           <div className={paperContainer}>
             <div className={paperHandler}>
-              <p className={headerHandler}>Edit Note</p>
+              <p>Edit Note</p>
               <form onSubmit={handleSubmit(submitForm)}>
                 <Grid container className={formContainer}>
-                  <Grid xs={12} item className={errorHandler}>
+                  <Grid xs={12} item className={errorText}>
                     <p> {errors.title?.message} </p>
                     <p> {errors.category?.message} </p>
                     <p> {errors.description?.message} </p>
                   </Grid>
                   <Grid item xs={8}>
-                    <input
-                      type='text'
+                    <TextField
+                      inputProps={{
+                        style: { paddingLeft: "1rem" },
+                      }}
                       name='title'
-                      defaultValue={note.title}
-                      ref={register}
+                      placeholder='Title...'
+                      inputRef={register}
                       className={titleInputField}
-                    ></input>
+                      defaultValue={note.title}
+                    ></TextField>
                   </Grid>
 
                   <Grid item xs={4}>
-                    <select
+                    <Controller
+                      as={Select} // same as Material UI Select
+                      style={{
+                        paddingLeft: "1rem",
+                      }}
                       className={selectInputField}
+                      control={control}
                       name='category'
                       defaultValue={note.category}
-                      ref={register}
                     >
-                      <option value='Home'>Home</option>
-                      <option value='Work'>Work</option>
-                      <option value='Personal'>Personal</option>
-                    </select>
+                      <MenuItem value='Home'>Home</MenuItem>
+                      <MenuItem value='Work'>Work</MenuItem>
+                      <MenuItem value='Personal'>Personal</MenuItem>
+                    </Controller>
                   </Grid>
 
                   <Grid item xs={8}>
-                    <textarea
-                      type='text'
+                    <TextField
+                      multiline
+                      inputProps={{
+                        style: { paddingLeft: "1rem" },
+                      }}
+                      rows={9}
                       name='description'
-                      defaultValue={note.description}
-                      ref={register}
+                      placeholder='Description...'
+                      inputRef={register}
                       className={descriptionInputField}
+                      defaultValue={note.description}
                     />
                   </Grid>
 
                   <Grid item xs={9} />
 
                   <Grid item xs={3} align='right'>
-                    <Button className={buttonHandler} onClick={handleClose}>
+                    <Button className={buttonText} onClick={handleClose}>
                       Cancel{" "}
                     </Button>
-                    <Button className={buttonHandler} type='submit'>
+                    <Button className={buttonText} type='submit'>
                       Edit{" "}
                     </Button>
                   </Grid>

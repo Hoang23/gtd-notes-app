@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Modal } from "@material-ui/core";
+import { Modal, Select, MenuItem, TextField } from "@material-ui/core";
 import { Button } from "../../components/Button";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { blue, grey } from "@material-ui/core/colors";
 import { Grid } from "../../components/Grid";
 import { motion } from "framer-motion";
-import { Frame } from "framer";
 
 const schema = yup.object().shape({
-  title: yup.string().required(),
+  title: yup
+    .string()
+    .required()
+    .max(50, "title must be less than 50 characters"),
   description: yup.string(),
   category: yup.string(),
 });
@@ -41,32 +43,27 @@ const useStyles = makeStyles((theme) => ({
   titleInputField: {
     borderRadius: "4px",
     width: "90%",
-    height: "40px",
-    fontSize: 18,
     color: grey[700],
     backgroundColor: grey[200],
+    fontSize: 18,
+
+    borderBottom: "none",
   },
   descriptionInputField: {
-    borderRadius: "4px",
+    color: grey[700],
+    backgroundColor: grey[200],
     width: "90%",
-    height: "20vh",
-    minHeight: "20vh",
-    fontSize: 18,
-    color: grey[700],
-    backgroundColor: grey[200],
-    maxWidth: "90%",
-    maxHeight: "40vh",
-    minWidth: "90%",
+    borderRadius: "4px",
     marginTop: "2rem",
-    fontFamily: "Roboto",
-  },
-  selectInputField: {
-    borderRadius: "3px",
-    width: "100%",
-    height: "45px",
     fontSize: 18,
+  },
+
+  selectInputField: {
+    borderRadius: "4px",
+    width: "100%",
     color: grey[700],
     backgroundColor: grey[200],
+    fontSize: 18,
   },
   formContainer: {
     display: "flex",
@@ -94,7 +91,6 @@ export const AddNoteDialog = ({ addNote }) => {
     descriptionInputField,
     selectInputField,
     formContainer,
-    headerText,
     errorText,
     buttonText,
   } = useStyles();
@@ -109,7 +105,7 @@ export const AddNoteDialog = ({ addNote }) => {
     setOpen(false);
   };
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, control, errors } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -124,20 +120,12 @@ export const AddNoteDialog = ({ addNote }) => {
     }
   };
 
-  const transition = {
-    type: "spring",
-    restDelta: 0.5,
-  };
-
   return (
     <div>
       <motion.div
-        // initial={{ opacity: 0 }}
-        // animate={{ opacity: 1 }}
-        // transition={{ duration: 0.5 }}
         initial={{ rotate: 0 }}
         animate={{ rotate: 360 }}
-        transition={{ type: "spring", duration: 1.5, delay: 3 }}
+        transition={{ duration: 1.5, delay: 3 }}
       >
         <Button type='button' onClick={handleOpen} className={addNoteModal}>
           + Add Note
@@ -152,7 +140,7 @@ export const AddNoteDialog = ({ addNote }) => {
         >
           <div className={paperContainer}>
             <div className={paper}>
-              <p className={headerText}>Add Note</p>
+              <p>Add Note</p>
               <form onSubmit={handleSubmit(submitForm)}>
                 <Grid container className={formContainer}>
                   <Grid xs={12} item className={errorText}>
@@ -161,34 +149,44 @@ export const AddNoteDialog = ({ addNote }) => {
                     <p> {errors.description?.message} </p>
                   </Grid>
                   <Grid item xs={8}>
-                    <input
-                      type='text'
+                    <TextField
+                      inputProps={{
+                        style: { paddingLeft: "1rem" },
+                      }}
                       name='title'
                       placeholder='Title...'
-                      ref={register}
+                      inputRef={register}
                       className={titleInputField}
-                    ></input>
+                    ></TextField>
                   </Grid>
 
                   <Grid item xs={4}>
-                    <select
+                    <Controller
+                      as={Select} // same as Material UI Select
+                      style={{
+                        paddingLeft: "1rem",
+                      }}
                       className={selectInputField}
+                      control={control}
                       name='category'
-                      placeholder='Category...'
-                      ref={register}
+                      defaultValue={"Home"}
                     >
-                      <option value='Home'>Home</option>
-                      <option value='Work'>Work</option>
-                      <option value='Personal'>Personal</option>
-                    </select>
+                      <MenuItem value='Home'>Home</MenuItem>
+                      <MenuItem value='Work'>Work</MenuItem>
+                      <MenuItem value='Personal'>Personal</MenuItem>
+                    </Controller>
                   </Grid>
 
                   <Grid item xs={8}>
-                    <textarea
-                      type='text'
+                    <TextField
+                      multiline
+                      inputProps={{
+                        style: { paddingLeft: "1rem" },
+                      }}
+                      rows={9}
                       name='description'
                       placeholder='Description...'
-                      ref={register}
+                      inputRef={register}
                       className={descriptionInputField}
                     />
                   </Grid>

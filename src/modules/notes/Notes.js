@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Grid } from "../../components/Grid";
+import { Typography } from "../../components/Typography";
 import { CardNote } from "./CardNote";
 import { AddNoteDialog } from "./AddNoteDialog";
 import { FilterPanel } from "./FilterPanel";
 import { useNotes } from "./useNotes";
 import { ProgressSection } from "./ProgressSection";
 import { SearchBar } from "./SearchBar";
-import { DeleteAllNotesButton } from "./DeleteAllNotesButton";
+import { DeleteCompletedNotesButton } from "./DeleteCompletedNotesButton";
 import { EmptyNotesAssistance } from "./EmptyNotesAssistance";
 import { makeStyles } from "@material-ui/core/styles";
 import { motion } from "framer-motion";
@@ -33,7 +34,7 @@ export const Notes = () => {
     addNote,
     updateComplete,
     deleteNote,
-    deleteAllNotes,
+    deleteCompletedNotes,
     editNote,
     SortNotes,
     countNotesCompleted,
@@ -64,10 +65,14 @@ export const Notes = () => {
 
   let transitionTime = 0.2;
 
-  localStorage.clear();
+  // localStorage.clear();
 
   return (
     <>
+      <p>
+        Demo App -{" "}
+        <a href='https://ikanotesv1.netlify.app/'> Try the full app</a>
+      </p>
       <SearchBar setSearch={setSearch} /> <br />
       <Grid container justify='space-between' alignItems='center' spacing={3}>
         <Grid item xs={12} sm={8}>
@@ -75,7 +80,9 @@ export const Notes = () => {
         </Grid>
         <Grid container item spacing={1} sm={4} className={ActionButtons}>
           <Grid item>
-            <DeleteAllNotesButton deleteAllNotes={deleteAllNotes} />
+            <DeleteCompletedNotesButton
+              deleteCompletedNotes={deleteCompletedNotes}
+            />
           </Grid>
 
           <Grid item>
