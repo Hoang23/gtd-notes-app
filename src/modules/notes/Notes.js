@@ -69,10 +69,6 @@ export const Notes = () => {
 
   return (
     <>
-      <p>
-        Demo App -{" "}
-        <a href='https://ikanotesv1.netlify.app/'> Try the full app</a>
-      </p>
       <SearchBar setSearch={setSearch} /> <br />
       <Grid container justify='space-between' alignItems='center' spacing={3}>
         <Grid item xs={12} sm={8}>
